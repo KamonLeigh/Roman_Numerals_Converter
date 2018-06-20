@@ -1,8 +1,9 @@
 const express = require('express');
 const MongoClient = require('mongodb').MongoClient;
-const mongodb = require('mongodb')
+const mongodb = require('mongodb')  ;
+const alert = require('alert-node')
 const bodyParser = require('body-parser');
-const operations = require('../functions')
+const operations = require('../functions');
 
 const port = process.env.PORT || 3000
 
@@ -36,31 +37,45 @@ app.get('/all/:numeralType', (req, res) => {
 })
 
 
-app.post('/arabic', (req, res) => {
-    const inputValue = req.body.inputValue;
+app.get('/arabic/:number', (req, res) => {
+    const inputValue = req.params.number;
     const convertedValue = operations.romanToNumber(inputValue);
+    console.log(convertedValue)
+
+    if(convertedValue === undefined){
+        alert('Invalid Input')
+        return res.status(400).send()
+    }
 
     const outcome = {inputValue, convertedValue}
-    db.collection('arabic').update(outcome, outcome, {upsert:true}).then(result => res.send(result))
-                                           .catch(err => {
-                                               console.log(err)
-                                           }) 
+    db.collection('arabic').update(outcome, outcome, {
+                    upsert:true
+                    }).then(result => res.send(result))
+                       .catch(err => {
+                             console.log(err)
+                     }) 
 })
 
 
-app.post('/number', (req, res) => {
-    const inputValue = Number(req.body.inputValue);
+app.get('/number/:number', (req, res) => {
+    const inputValue = Number(req.params.number);
+
+    if(isNaN(inputValue)){ 
+        alert('Invalid Input')
+        return res.status(400).send(); 
+    }
+
     const convertedValue = operations.numberToRoman(inputValue);
     const outcome = {
         inputValue,
         convertedValue
     }
-    db.collection('number').update(outcome, outcome, {
-            upsert: true
-        }).then(result => res.send(result))
-        .catch(err => {
-            console.log(err)
-        })
+         db.collection('number').update(outcome, outcome, {
+                 upsert: true
+             }).then(result => res.send(result))
+             .catch(err => {
+                 console.log(err)
+             })
 })
 
 

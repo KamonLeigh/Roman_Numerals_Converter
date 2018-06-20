@@ -4,7 +4,7 @@ const numberToRoman = (num) =>{
     num = Math.floor(num)
     // This stores the Roman numerals
     let result = ''
-
+   
     for(const key in list){
         //  loop through the keys if if statement is true. I will round figure and save key to
         //  result  
@@ -39,6 +39,10 @@ const romanToNumber = (str) => {
           }
         })
 
+        if(str.length > 0) {
+           return console.log('invalid input')
+        }
+        
         return result
 }
 

@@ -5,14 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "start":"node server/index.js"
+    "start": "node server/index.js"
   },
-  "engines":{
-    "node":"10.4.1"
+  "engines": {
+    "node": "10.4.1"
   },
   "author": "Byron Dunkley",
   "license": "ISC",
   "dependencies": {
+    "alert-node": "^1.2.1",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "mongodb": "^3.0.10",
