@@ -3,20 +3,20 @@ const MongoClient = require('mongodb').MongoClient;
 const mongodb = require('mongodb')  ;
 const alert = require('alert-node')
 const bodyParser = require('body-parser');
-const operations = require('../functions');
+const operations = require('../functions'); 
+const data = require('../config/db')
 
 const port = process.env.PORT || 3000
 
 const app = express();
 app.use(bodyParser.urlencoded({extended:true}))
 
-const url = 'mongodb://localhost:27017/';
+//const url = 'mongodb://localhost:27017/';
 let db;
 
-MongoClient.connect(url, (err, database) => {
+MongoClient.connect(data.url, (err, database) => {
     if (err) return console.error(err);
-    db = database.db('roman_numerals_converter');
-    console.log('connecting to server')
+    db = database.db('converter');
 
     app.listen(port, () => {
         console.log('listening on 3000')
@@ -32,10 +32,9 @@ app.get('/all/:numeralType', (req, res) => {
        console.log(JSON.stringify(doc, undefined, 2))
        res.send(doc)
    }).catch(err => {
-       console.log(err)
+       res.send(`An Error has occured: ${err}`)
    })
 })
-
 
 app.get('/arabic/:number', (req, res) => {
     const inputValue = req.params.number;
@@ -52,10 +51,9 @@ app.get('/arabic/:number', (req, res) => {
                     upsert:true
                     }).then(result => res.send(result))
                        .catch(err => {
-                             console.log(err)
+                            res.send(`An Error has occured: ${err}`)
                      }) 
 })
-
 
 app.get('/number/:number', (req, res) => {
     const inputValue = Number(req.params.number);
@@ -69,19 +67,20 @@ app.get('/number/:number', (req, res) => {
     const outcome = {
         inputValue,
         convertedValue
-    }
+    }   
+
          db.collection('number').update(outcome, outcome, {
                  upsert: true
              }).then(result => res.send(result))
              .catch(err => {
-                 console.log(err)
+                res.send(`An Error has occured: ${err}`)
              })
 })
 
 
 app.delete('/remove/all', (req, res) =>{
     db.collection('arabic').deleteMany({}).then(result => res.send(result))
-                            .catch(err => console.log(err))
-    db.collection('number').deleteMany({}).then(result => res.send(result))
-        .catch(err => console.log(err))
+                            .catch(err => res.send(`An Error has occured: ${err}`))
+    db.collection('number').deleteMany({}).then(result => res.send('records have been deleted'))
+        .catch(err => res.send(`An Error has occured: ${err}`))
 })
