@@ -51,7 +51,7 @@ app.get('/arabic/:number', (req, res) => {
                      }) 
 })
 
-app.get('/number/:number', (req, res) => {
+app.get('/roman/:number', (req, res) => {
     const inputValue = Number(req.params.number);
 
     if(isNaN(inputValue)){ 
@@ -61,7 +61,7 @@ app.get('/number/:number', (req, res) => {
 
     const convertedValue = operations.numberToRoman(inputValue);
     const outcome = { inputValue,convertedValue }   
-     db.collection('number').update(outcome, outcome, {
+     db.collection('roman').update(outcome, outcome, {
                  upsert: true
              }).then(result => res.send(result))
              .catch(err => {
@@ -72,6 +72,6 @@ app.get('/number/:number', (req, res) => {
 app.delete('/remove/all', (req, res) =>{
     db.collection('arabic').deleteMany({}).then(result => res.send(result))
                             .catch(err => res.send(`An Error has occured: ${err}`))
-    db.collection('number').deleteMany({}).then(result => res.send('records have been deleted'))
+    db.collection('roman').deleteMany({}).then(result => res.send('records have been deleted'))
         .catch(err => res.send(`An Error has occured: ${err}`))
 })
