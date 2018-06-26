@@ -69,9 +69,14 @@ app.get('/roman/:number', (req, res) => {
              })
 })
 
-app.delete('/remove/all', (req, res) =>{
-    db.collection('arabic').deleteMany({}).then(result => res.send(result))
-                            .catch(err => res.send(`An Error has occured: ${err}`))
-    db.collection('roman').deleteMany({}).then(result => res.send('records have been deleted'))
-        .catch(err => res.send(`An Error has occured: ${err}`))
+app.delete('/remove/all', async (req, res) =>{
+    try {
+         const arabic = await db.collection('arabic').deleteMany({});
+         const roman = await db.collection('roman').deleteMany({});
+         res.send('job done')
+    } catch(err) {
+        console.log(err)
+        res.status(500).send()
+    }
+   
 })
