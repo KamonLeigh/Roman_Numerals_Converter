@@ -21,7 +21,6 @@ MongoClient.connect(data.url, (err, database) => {
 });
 
 
-
 app.get('/all/:numeralType', (req, res) => {
     const route = req.params.numeralType
 
