@@ -2,6 +2,7 @@ const numberToRoman = (num) =>{
     // Make list of single units
     const list = {MM: 2000, M:1000, CM: 900, D: 500, CD: 400, C:100, XC: 90, L:50, XL:40, X:10, IX: 9, V: 5, IV: 4, I:1}
     num = Math.floor(num)
+    
     // This stores the Roman numerals
     let result = ''
    
@@ -19,8 +20,6 @@ const numberToRoman = (num) =>{
 
     }
     return result
-    
-
 }
 
 //console.log(numberToRoman(2018))
@@ -28,8 +27,11 @@ const numberToRoman = (num) =>{
 
 const romanToNumber = (str) => {
     str = str.toUpperCase()
+
     // Table is different from above as I had to deal with triple letters
     const list = { MM:2000, M: 1000, CM: 900, D: 500, CD: 400, CCC: 300, CC:200, C: 100, XC: 90, L: 50, XL: 40,  XXX: 30, XX:20, X: 10, IX: 9, V: 5, IV: 4, III:3, II: 2, I: 1 }
+    
+    // This is state of the the total 
     let result = 0 
 
     Object.keys(list).forEach(item => {
@@ -38,7 +40,7 @@ const romanToNumber = (str) => {
            str = str.replace(item, '');
           }
         })
-
+    // Handle edge cases for example if lettera aren't on look up table
         if(str.length > 0) {
            return console.log('invalid input')
         }

@@ -1,15 +1,12 @@
 const express = require('express');
 const MongoClient = require('mongodb').MongoClient;
-const mongodb = require('mongodb')  ;
 const alert = require('alert-node')
-const bodyParser = require('body-parser');
 const operations = require('../functions'); 
 const data = require('../config/db')
 
 const port = process.env.PORT || 3000
 
 const app = express();
-app.use(bodyParser.urlencoded({extended:true}))
 
 //const url = 'mongodb://localhost:27017/';
 let db;
@@ -64,19 +61,14 @@ app.get('/number/:number', (req, res) => {
     }
 
     const convertedValue = operations.numberToRoman(inputValue);
-    const outcome = {
-        inputValue,
-        convertedValue
-    }   
-
-         db.collection('number').update(outcome, outcome, {
+    const outcome = { inputValue,convertedValue }   
+     db.collection('number').update(outcome, outcome, {
                  upsert: true
              }).then(result => res.send(result))
              .catch(err => {
                 res.send(`An Error has occured: ${err}`)
              })
 })
-
 
 app.delete('/remove/all', (req, res) =>{
     db.collection('arabic').deleteMany({}).then(result => res.send(result))
