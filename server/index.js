@@ -45,7 +45,7 @@ app.get('/arabic/:number', (req, res) => {
     const outcome = {inputValue, convertedValue}
     db.collection('arabic').update(outcome, outcome, {
                     upsert:true
-                    }).then(result => res.send(result))
+                    }).then(result => res.send(outcome))
                        .catch(err => {
                             res.send(`An Error has occured: ${err}`)
                      }) 
@@ -63,7 +63,7 @@ app.get('/roman/:number', (req, res) => {
     const outcome = { inputValue,convertedValue }   
      db.collection('roman').update(outcome, outcome, {
                  upsert: true
-             }).then(result => res.send(result))
+             }).then(result => res.send(outcome))
              .catch(err => {
                 res.send(`An Error has occured: ${err}`)
              })
